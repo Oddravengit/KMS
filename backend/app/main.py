@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.config import Settings
+from app.customers import router as customers_router
 from app.db import build_engine, build_session_factory
 
 logger = logging.getLogger("odd_raven.api")
@@ -39,6 +40,7 @@ def create_app(settings: Settings | None = None, engine=None) -> FastAPI:
     app = FastAPI(title="ODD RAVEN API", version="v1", lifespan=lifespan)
     app.state.engine = db_engine
     app.state.session_factory = build_session_factory(db_engine)
+    app.include_router(customers_router)
 
     @app.middleware("http")
     async def log_requests(request: Request, call_next):
