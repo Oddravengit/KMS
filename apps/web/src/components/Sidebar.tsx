@@ -16,7 +16,7 @@ export function Sidebar({
     <aside className="sidebar" aria-label="Application sidebar">
       <div className="brand-header">
         <span className="brand-mark" aria-hidden="true" />
-        <div className="brand-copy">
+        <div className="brand-copy" aria-hidden={collapsed}>
           <strong>ODD RAVEN</strong>
           <small>DTF ERP</small>
         </div>

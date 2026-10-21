@@ -36,10 +36,28 @@ This is an application shell preview. Business pages remain explicit placeholder
 
 Worker 2 can introduce backend services independently. Connect authenticated identity and server-authorized navigation later; hiding menu items must not substitute for server permission checks. Avoid changing shell component boundaries without coordinating with Worker 1.
 
-The layout targets desktop; widths below 650 px use horizontal scrolling until a mobile design is approved. Glass uses a CSS gradient background; no wallpaper asset is visible in the approved light frame. The brand's plain purple square and low-opacity topbar subtitle follow that reference. Other modules and role variants remain future work.
+The layout targets desktop; widths below 650 px use horizontal scrolling until a mobile design is approved. Glass uses the approved local Figma wallpaper with a dim overlay and translucent, blurred surfaces. The wallpaper stays hidden in Light and Dark. The brand's plain purple square and low-opacity topbar subtitle follow that reference. Other modules and role variants remain future work.
 
 ## Validation
 
 TypeScript strict checking, five interaction tests, and production build passed. Tests cover route preservation during collapse/expand, all themes and persistence, missing routes, New Order placeholder behavior, and keyboard search/navigation. CI repeats these checks on frontend changes.
 
-All sixteen SVGs were validated as XML with SVG roots and expected dimensions. Browser screenshot verification was attempted, but Chromium is unavailable in this execution environment and its download returned an invalid archive. Visual rendering therefore still requires reviewer verification at 1440×900, including light/dark/glass, collapsed sidebar, scroll access at shorter heights, and asset geometry.
+All sixteen SVGs were validated as XML with SVG roots and expected dimensions. The original foundation could not be browser-verified. The follow-up verification below supersedes that limitation for the sidebar/Glass fixes.
+
+
+## Sidebar and Glass restoration — 2026-10-21
+
+Commit `7c54245` was absent from the available history; only the missing fixes were reproduced on `feat/day01-frontend-foundation`.
+
+- Read-only Figma reference: desktop `1:7`, sidebar variants under `34:259`, Glass sidebar instance `178:460`, wallpaper `178:432`. Expanded/collapsed widths are 256/72 px; motion remains 280 ms ease-out.
+- Brand mark, wordmark and toggle retain their DOM identity and animate position/transform without switching header layouts. Collapsed text is aria-hidden; reduced motion disables transitions.
+- Wallpaper recovered as `apps/web/public/assets/figma/glass-wallpaper.png` (1672 × 941). Glass sidebar/topbar/card use translucent surfaces, blur, borders/highlights; popovers use a darker translucent background. Production contains no temporary asset URLs.
+- Chromium at 1440 × 900 verified Light, Dark, expanded/collapsed Glass, wallpaper decoding, loaded image assets, intermediate logo geometry, Customers route preservation, and rapid reversals. At 1440 × 600, keyboard focus scrolled Settings into view; theme activation and Ctrl+K/Escape worked. Reduced-motion transition duration was zero. No browser page errors occurred.
+- TypeScript, all five interaction tests (including stable header/toggle identity), production build and whitespace checks pass.
+- Existing Dark inactive navigation remains muted; unchanged for this focused task. Business pages remain placeholders. Final visual acceptance against the approved Figma remains with the user before new screens begin.
+
+Review workspace: https://redesigned-spoon-pgj99v5jg9wc6p9r.github.dev
+
+Private frontend preview (port 5173): https://redesigned-spoon-pgj99v5jg9wc6p9r-5173.app.github.dev
+
+Frontend PR: https://github.com/Oddravengit/KMS/pull/1

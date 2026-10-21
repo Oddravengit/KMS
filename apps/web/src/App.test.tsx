@@ -18,7 +18,13 @@ describe("desktop shell", () => {
     const user = userEvent.setup();
     setup();
     await user.click(screen.getByRole("link", { name: "Customers" }));
-    await user.click(screen.getByRole("button", { name: "Collapse sidebar" }));
+    const brand = screen.getByText("ODD RAVEN");
+    const header = brand.closest(".brand-header");
+    const toggle = screen.getByRole("button", { name: "Collapse sidebar" });
+    await user.click(toggle);
+    expect(brand.parentElement).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByRole("button", { name: "Expand sidebar" })).toBe(toggle);
+    expect(brand.closest(".brand-header")).toBe(header);
     expect(
       screen.getByRole("heading", { name: "Customers", level: 1 }),
     ).toBeInTheDocument();
@@ -27,6 +33,8 @@ describe("desktop shell", () => {
       "page",
     );
     await user.click(screen.getByRole("button", { name: "Expand sidebar" }));
+    expect(brand.parentElement).toHaveAttribute("aria-hidden", "false");
+    expect(screen.getByRole("button", { name: "Collapse sidebar" })).toBe(toggle);
     expect(
       screen.getByRole("heading", { name: "Customers", level: 1 }),
     ).toBeInTheDocument();
