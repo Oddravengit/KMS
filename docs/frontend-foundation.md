@@ -73,3 +73,14 @@ Validation: six interaction tests, TypeScript check, production build, whitespac
 Removed the duplicated in-page route title and description from every destination. Route context now appears only in the persistent top header; page content begins directly below it. The Dashboard overview and all placeholder routes retain their content and route behavior.
 
 The approved Figma file was synchronized on 2026-10-21 by hiding the Page Title and Page Description layers in all 11 route preview frames. The topbar title and subtitle remain visible. Figma structural validation confirmed 22 route title/description layers hidden, followed by a 1440 × 900 screenshot check.
+
+## Design-first workflow
+
+For every future design update, use the approved Figma file as the first implementation surface:
+
+1. Create or update the Figma components, variants, prototype interactions, and animations.
+2. Validate the Figma structure and visual result against the approved screen.
+3. Reflect the validated design in `apps/web` using the existing component and token boundaries.
+4. Run frontend checks and record the Figma and code changes together in the handoff.
+
+Do not implement a new visual or interaction in the frontend first and backfill Figma later.
