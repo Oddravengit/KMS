@@ -2,6 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { destinations } from "../routes";
 import { themes, useTheme } from "../theme/ThemeProvider";
 import { Icon } from "./Icon";
+import { ConnectionStatus } from "./ConnectionStatus";
 export function Sidebar({
   collapsed,
   toggle,
@@ -73,6 +74,7 @@ export function Sidebar({
           ))}
         </div>
       </fieldset>
+      {import.meta.env.DEV && <ConnectionStatus />}
     </aside>
   );
 }
