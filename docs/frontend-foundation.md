@@ -74,7 +74,7 @@ Removed the duplicated in-page route title and description from every destinatio
 
 The approved Figma file was synchronized on 2026-10-21 by hiding the Page Title and Page Description layers in all 11 route preview frames. The topbar title and subtitle remain visible. Figma structural validation confirmed 22 route title/description layers hidden, followed by a 1440 × 900 screenshot check.
 
-The Dashboard overview was then created in Figma before the matching folder styling was updated. Figma now contains reusable `Dashboard / Overview Header`, `Dashboard / KPI Card`, `Dashboard / Order Volume Panel`, `Dashboard / Production Status Panel`, `Dashboard / Activity Row`, and `Dashboard / Recent Activity Panel` component masters. The Dashboard route uses their instances for the overview header, four KPI cards, two analytics panels, and recent activity rows. The folder mirrors this composition with the same demo data and fixed panel geometry.
+The Dashboard overview was then created in Figma before the matching folder styling was updated. Figma now contains reusable `Dashboard / Overview Header`, `Dashboard / KPI Card`, `Dashboard / Order Volume Panel`, `Dashboard / Production Status Panel`, `Dashboard / Activity Row`, and `Dashboard / Recent Activity Panel` component masters. The Dashboard route uses their instances for the overview header, four KPI cards, two analytics panels, and recent activity rows. The folder mirrors this composition with the same demo data and fixed panel geometry; the center analytics row is 1,000px wide so its right edge aligns with the activity panel.
 
 ## Semantic variable bindings — 2026-10-21
 

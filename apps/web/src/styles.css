@@ -499,7 +499,7 @@ h1 {
 .metric-card strong { font-size: 27px; line-height: 1; }
 .metric-card small { color: var(--text-secondary); font-size: 11px; }
 .metric-violet { border-top: 3px solid var(--primary); }.metric-blue { border-top: 3px solid var(--status-info); }.metric-green { border-top: 3px solid var(--status-success); }.metric-amber { border-top: 3px solid var(--status-warning); }
-.dashboard-panels { display: grid; grid-template-columns: 600px 400px; gap: 14px; margin-top: 24px; }
+.dashboard-panels { display: grid; grid-template-columns: 586px 400px; gap: 14px; margin-top: 24px; }
 .dashboard-panel { padding: 20px; }
 .panel-value { color: var(--text-secondary); font-size: 12px; }
 .trend-chart { height: 124px; display: flex; align-items: end; gap: 12px; padding: 18px 8px 0; border-bottom: 1px solid var(--border); margin-top: 20px; }
