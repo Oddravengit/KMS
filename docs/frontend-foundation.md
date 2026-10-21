@@ -76,6 +76,10 @@ The approved Figma file was synchronized on 2026-10-21 by hiding the Page Title 
 
 The Dashboard overview was then created in Figma before the matching folder styling was updated. Figma now contains reusable `Dashboard / Overview Header`, `Dashboard / KPI Card`, `Dashboard / Order Volume Panel`, `Dashboard / Production Status Panel`, `Dashboard / Activity Row`, and `Dashboard / Recent Activity Panel` component masters. The Dashboard route uses their instances for the overview header, four KPI cards, two analytics panels, and recent activity rows. The folder mirrors this composition with the same demo data and fixed panel geometry.
 
+## Semantic variable bindings — 2026-10-21
+
+The Dashboard Figma masters and their instances use the existing `ODD RAVEN / SEMANTIC COLORS` variables for surfaces, borders, primary/secondary text, actions, selected backgrounds, and success/info/warning states. Existing variables now include WEB code syntax mappings such as `var(--bg-surface)`, `var(--action-primary)`, and `var(--status-success)`. The frontend CSS exposes the same semantic aliases so token corrections can flow through the design and code consistently.
+
 ## Design-first workflow
 
 For every future design update, use the approved Figma file as the first implementation surface:
