@@ -71,3 +71,5 @@ Validation: six interaction tests, TypeScript check, production build, whitespac
 ## Route title presentation — 2026-10-21
 
 Removed the duplicated in-page route title and description from every destination. Route context now appears only in the persistent top header; page content begins directly below it. The Dashboard overview and all placeholder routes retain their content and route behavior.
+
+The approved Figma file was synchronized on 2026-10-21 by hiding the Page Title and Page Description layers in all 11 route preview frames. The topbar title and subtitle remain visible. Figma structural validation confirmed 22 route title/description layers hidden, followed by a 1440 × 900 screenshot check.
