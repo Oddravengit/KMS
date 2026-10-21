@@ -80,6 +80,8 @@ The Dashboard overview was then created in Figma before the matching folder styl
 
 The Dashboard Figma masters and their instances use the existing `ODD RAVEN / SEMANTIC COLORS` variables for surfaces, borders, primary/secondary text, actions, selected backgrounds, and success/info/warning states. Existing variables now include WEB code syntax mappings such as `var(--bg-surface)`, `var(--action-primary)`, and `var(--status-success)`. The frontend CSS exposes the same semantic aliases so token corrections can flow through the design and code consistently.
 
+The Dashboard masters also use auto-layout shells: vertical KPI/panel structures and a horizontal activity-row structure. Chart internals remain intentionally positioned inside their responsive panel shells, while repeated activity rows remain instances of the Activity Row master. Fixed component slots were restored after enabling auto-layout, and the composed Dashboard passed a final 1440 × 900 Figma screenshot check.
+
 ## Design-first workflow
 
 For every future design update, use the approved Figma file as the first implementation surface:
