@@ -39,18 +39,14 @@ def create_app(settings: Settings | None = None, engine=None) -> FastAPI:
     app = FastAPI(title="ODD RAVEN API", version="v1", lifespan=lifespan)
     app.state.engine = db_engine
     app.state.session_factory = build_session_factory(db_engine)
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.cors_origins,
-        allow_credentials=True,
-        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type"],
-    )
 
     @app.middleware("http")
     async def log_requests(request: Request, call_next):
         started = time.monotonic()
-        response = await call_next(request)
+        try:
+            response = await call_next(request)
+        except Exception as exc:  # noqa: BLE001 - API boundary returns a sanitized 500
+            response = await unexpected_error(request, exc)
         # Exclude query strings and bodies to keep customer data out of logs.
         logger.info(
             "%s %s %s %.3fs",
@@ -86,6 +82,14 @@ def create_app(settings: Settings | None = None, engine=None) -> FastAPI:
                 status_code=503, content={"status": "unavailable", "database": "unavailable"}
             )
         return Readiness(status="ok", database="ok")
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_credentials=True,
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Authorization", "Content-Type"],
+    )
 
     return app
 

@@ -59,7 +59,8 @@ this integration test is skipped. Never point it at a customer database.
 `requirements-dev.lock` records the exact dependency versions used for validation.
 `pyproject.toml` contains the supported dependency ranges for packaging.
 CI repeats lint, format, tests, dependency checks and migration SQL generation,
-with PostgreSQL 16 available. The initial migration establishes the Alembic
+with PostgreSQL 16 available. A separate Windows job verifies dependency installation
+and API tests. The initial migration establishes the Alembic
 baseline only; business models and authentication are subsequent work.
 
 ## Scope and handoff

@@ -93,3 +93,23 @@ def test_openapi(client):
     schema = client.get("/openapi.json").json()
     assert "/api/v1/health" in schema["paths"]
     assert "/api/v1/ready" in schema["paths"]
+
+
+@pytest.mark.parametrize(
+    "origin,allowed", [("http://localhost:5173", True), ("https://untrusted.example", False)]
+)
+def test_unhandled_error_cors_and_request_log(engine, caplog, origin, allowed):
+    app = create_app(Settings(_env_file=None), engine)
+
+    @app.get("/failure")
+    def failure():
+        raise RuntimeError("sensitive-error-detail")
+
+    with TestClient(app) as client, caplog.at_level("INFO", logger="odd_raven.api"):
+        response = client.get("/failure?token=private-token", headers={"Origin": origin})
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Internal server error"}
+    assert (response.headers.get("access-control-allow-origin") == origin) is allowed
+    assert "GET /failure 500" in caplog.text
+    assert "sensitive-error-detail" not in caplog.text
+    assert "private-token" not in caplog.text
