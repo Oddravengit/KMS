@@ -23,12 +23,6 @@ export function App() {
           subtitle={page?.subtitle ?? "Unknown destination"}
         />
         <main id="main-content" tabIndex={-1}>
-          <h1>{page?.label ?? "Page not found"}</h1>
-          <p className="page-description">
-            {page?.description ??
-              page?.subtitle ??
-              "This workspace page does not exist."}
-          </p>
           {page?.path === "/" ? <DashboardOverview /> : <section className="workspace-card" aria-label="Page workspace">
             <h2>PAGE NAVIGATION PROTOTYPE</h2>
             <p>

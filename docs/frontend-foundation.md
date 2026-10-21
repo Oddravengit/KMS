@@ -67,3 +67,7 @@ Frontend PR: https://github.com/Oddravengit/KMS/pull/1
 The Dashboard route now includes a static overview slice from the roadmap's KPI/Statistics and Charts/Analytics areas: four KPI cards, an order-volume chart, production status bars, and a recent activity table. It is labeled `DEMO DATA` and uses local presentation data only; no backend endpoint, live metric, order action, or authentication behavior is implied.
 
 Validation: six interaction tests, TypeScript check, production build, whitespace check, and Chromium rendering at 1440 × 900 passed. The remaining routes intentionally keep their approved placeholders until their page designs are approved.
+
+## Route title presentation — 2026-10-21
+
+Removed the duplicated in-page route title and description from every destination. Route context now appears only in the persistent top header; page content begins directly below it. The Dashboard overview and all placeholder routes retain their content and route behavior.

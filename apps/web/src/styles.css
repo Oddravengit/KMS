@@ -428,7 +428,7 @@ kbd {
   background: var(--bg-selected);
 }
 main {
-  padding: 52px 56px 46px 38px;
+  padding: 36px 56px 46px 38px;
   outline: none;
 }
 h1 {
@@ -464,7 +464,7 @@ h1 {
   font-size: 13px;
   color: var(--text-secondary);
 }
-.dashboard-overview { margin-top: 38px; }
+.dashboard-overview { margin-top: 0; }
 .dashboard-heading-row, .panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .dashboard-heading-row h2, .panel-heading h2 { margin: 0; font-size: 16px; font-weight: 600; }
 .dashboard-heading-row p, .panel-heading p { margin: 6px 0 0; color: var(--text-secondary); font-size: 12px; }
