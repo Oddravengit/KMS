@@ -36,6 +36,15 @@ business tables or runs migrations automatically.
 - Default permitted browser origin: `http://localhost:5173`. Configure
   `CORS_ORIGINS` as a JSON array in `.env` for other frontend origins.
 
+## Customer API
+
+- `GET /api/v1/customers?offset=0&limit=100` lists customers.
+- `POST /api/v1/customers` creates a customer with required `full_name` and
+  optional `email`, `phone`, and `notes` fields. Email values are unique.
+- `GET`, `PATCH`, and `DELETE /api/v1/customers/{id}` retrieve, update, or
+  remove one customer. Missing customers return 404; duplicate emails return
+  409.
+
 Future route handlers use `Annotated[Session, Depends(get_session)]` from
 `app.db`. A session closes on every request; writes must explicitly commit.
 Unhandled errors return a generic HTTP 500 response. Logs include method, path,
@@ -60,8 +69,9 @@ this integration test is skipped. Never point it at a customer database.
 `pyproject.toml` contains the supported dependency ranges for packaging.
 CI repeats lint, format, tests, dependency checks and migration SQL generation,
 with PostgreSQL 16 available. A separate Windows job verifies dependency installation
-and API tests. The initial migration establishes the Alembic
-baseline only; business models and authentication are subsequent work.
+and API tests. Migration `0002_customers` adds the first business table and
+customer CRUD API; authentication, orders, and other business models are
+subsequent work.
 
 ## Scope and handoff
 

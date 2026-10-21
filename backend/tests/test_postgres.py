@@ -25,7 +25,7 @@ def test_real_postgres_migration_and_readiness(monkeypatch):
         with engine.connect() as connection:
             assert (
                 connection.execute(text("SELECT version_num FROM alembic_version")).scalar()
-                == "0001_foundation"
+                == "0002_customers"
             )
     command.downgrade(config, "base")
     command.upgrade(config, "head")
