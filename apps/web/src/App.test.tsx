@@ -14,6 +14,12 @@ function setup(path = "/") {
   );
 }
 describe("desktop shell", () => {
+  it("shows the static dashboard overview without implying live data", () => {
+    setup();
+    expect(screen.getByRole("heading", { name: "Today at a glance", level: 2 })).toBeInTheDocument();
+    expect(screen.getByText("DEMO DATA")).toBeInTheDocument();
+    expect(screen.getByRole("table", { name: "Recent order activity" })).toBeInTheDocument();
+  });
   it("preserves route selection and content across collapse and expand", async () => {
     const user = userEvent.setup();
     setup();

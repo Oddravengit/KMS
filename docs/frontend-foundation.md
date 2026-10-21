@@ -61,3 +61,9 @@ Review workspace: https://redesigned-spoon-pgj99v5jg9wc6p9r.github.dev
 Private frontend preview (port 5173): https://redesigned-spoon-pgj99v5jg9wc6p9r-5173.app.github.dev
 
 Frontend PR: https://github.com/Oddravengit/KMS/pull/1
+
+## Dashboard overview — 2026-10-21
+
+The Dashboard route now includes a static overview slice from the roadmap's KPI/Statistics and Charts/Analytics areas: four KPI cards, an order-volume chart, production status bars, and a recent activity table. It is labeled `DEMO DATA` and uses local presentation data only; no backend endpoint, live metric, order action, or authentication behavior is implied.
+
+Validation: six interaction tests, TypeScript check, production build, whitespace check, and Chromium rendering at 1440 × 900 passed. The remaining routes intentionally keep their approved placeholders until their page designs are approved.
