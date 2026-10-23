@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { destinations } from "../routes";
 import { Icon } from "./Icon";
+import { TopbarIconButton } from "./TopbarIconButton";
 export function Topbar({
   title,
   subtitle,
@@ -68,6 +69,13 @@ export function Topbar({
           <Icon name="plus" />
           New Order
         </Link>
+        <TopbarIconButton kind="quick-action" label="Quick action: new order" to="/orders?intent=new" />
+        <details className="messages">
+          <summary role="button" aria-label="Messages">
+            <TopbarIconButton kind="messages" label="Messages" interactive={false} />
+          </summary>
+          <div className="popover">Messages will appear when the backend is connected.</div>
+        </details>
         <details className="notifications">
           <summary aria-label="Notifications">
             <Icon name="notification" />

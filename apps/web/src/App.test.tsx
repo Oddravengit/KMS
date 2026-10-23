@@ -19,6 +19,8 @@ describe("desktop shell", () => {
     expect(screen.getByRole("heading", { name: "Today at a glance", level: 2 })).toBeInTheDocument();
     expect(screen.getByText("DEMO DATA")).toBeInTheDocument();
     expect(screen.getByRole("table", { name: "Recent order activity" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Quick action: new order" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Messages" })).toBeInTheDocument();
   });
   it("preserves route selection and content across collapse and expand", async () => {
     const user = userEvent.setup();
