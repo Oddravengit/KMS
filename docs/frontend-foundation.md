@@ -92,3 +92,9 @@ For every future design update, use the approved Figma file as the first impleme
 4. Run frontend checks and record the Figma and code changes together in the handoff.
 
 Do not implement a new visual or interaction in the frontend first and backfill Figma later.
+
+## V1 component implementation rules — 2026-10-23
+
+The frontend worker follows the ODD RAVEN ERP V1 component specification. Work is scoped to the active business role, with Super Admin foundations first. Presentational components remain typed and reusable; feature API calls, permission checks, and business state stay at the feature boundary. Each delivered component must cover its required states, keyboard and screen-reader behavior, responsive layout, reduced-motion behavior, theme contrast, tests, and production validation. Demo content and Figma interactions remain explicitly non-backend functionality until an agreed API contract exists.
+
+The current audit confirms Component 001 — Master Sidebar (`34:259`) is implemented in `apps/web/src/components/Sidebar.tsx` with the approved 280ms indicator, expanded/collapsed behavior, route awareness, and Light/Dark/Glass themes. Component 002 — Desktop Topbar review (`398:2379`) is the next gap: the existing `Topbar` implements search, New Order, notifications, and profile, while the review reference also shows quick action and messages controls. The approved Figma review frame remains unchanged until those controls receive final design authorization.
