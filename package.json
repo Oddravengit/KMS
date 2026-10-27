@@ -1,0 +1,15 @@
+{
+  "name": "kms-erp",
+  "private": true,
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @kms/web",
+    "build": "npm run build -w @kms/web",
+    "check": "npm run check -w @kms/web",
+    "test": "npm run test -w @kms/web",
+    "lint": "npm run lint -w @kms/web",
+    "typecheck": "npm run typecheck -w @kms/web"
+  }
+}
