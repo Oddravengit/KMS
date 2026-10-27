@@ -14,22 +14,34 @@ function setup(path = "/") {
   );
 }
 describe("desktop shell", () => {
+  it("shows the static dashboard overview without implying live data", () => {
+    setup();
+    expect(screen.getByRole("heading", { name: "Today at a glance", level: 2 })).toBeInTheDocument();
+    expect(screen.getByText("DEMO DATA")).toBeInTheDocument();
+    expect(screen.getByRole("table", { name: "Recent order activity" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Quick action: new order" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Messages" })).toBeInTheDocument();
+  });
   it("preserves route selection and content across collapse and expand", async () => {
     const user = userEvent.setup();
     setup();
     await user.click(screen.getByRole("link", { name: "Customers" }));
-    await user.click(screen.getByRole("button", { name: "Collapse sidebar" }));
-    expect(
-      screen.getByRole("heading", { name: "Customers", level: 1 }),
-    ).toBeInTheDocument();
+    const brand = screen.getByText("ODD RAVEN");
+    const header = brand.closest(".brand-header");
+    const toggle = screen.getByRole("button", { name: "Collapse sidebar" });
+    await user.click(toggle);
+    expect(brand.parentElement).toHaveAttribute("aria-hidden", "true");
+    expect(screen.getByRole("button", { name: "Expand sidebar" })).toBe(toggle);
+    expect(brand.closest(".brand-header")).toBe(header);
+    expect(screen.getByRole("banner")).toHaveTextContent("Customers");
     expect(screen.getByRole("link", { name: "Customers" })).toHaveAttribute(
       "aria-current",
       "page",
     );
     await user.click(screen.getByRole("button", { name: "Expand sidebar" }));
-    expect(
-      screen.getByRole("heading", { name: "Customers", level: 1 }),
-    ).toBeInTheDocument();
+    expect(brand.parentElement).toHaveAttribute("aria-hidden", "false");
+    expect(screen.getByRole("button", { name: "Collapse sidebar" })).toBe(toggle);
+    expect(screen.getByRole("banner")).toHaveTextContent("Customers");
   });
   it("applies all themes and restores the saved preference", async () => {
     const user = userEvent.setup();
@@ -48,9 +60,7 @@ describe("desktop shell", () => {
   });
   it("supports direct destinations and unknown routes", () => {
     setup("/missing");
-    expect(
-      screen.getByRole("heading", { name: "Page not found", level: 1 }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("banner")).toHaveTextContent("Page not found");
   });
   it("opens the orders destination without pretending an order was created", async () => {
     const user = userEvent.setup();
@@ -70,8 +80,6 @@ describe("desktop shell", () => {
     expect(search).toHaveFocus();
     await user.type(search, "reports");
     await user.click(screen.getAllByRole("link", { name: "Reports" })[1]);
-    expect(
-      screen.getByRole("heading", { name: "Reports", level: 1 }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("banner")).toHaveTextContent("Reports");
   });
 });
