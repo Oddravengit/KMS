@@ -14,6 +14,19 @@ function setup(path = "/") {
   );
 }
 describe("desktop shell", () => {
+  it("renders the login placeholder without collecting credentials", async () => {
+    const user = userEvent.setup();
+    setup("/login");
+    expect(screen.getByRole("heading", { name: "Login placeholder" })).toBeInTheDocument();
+    expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: "View Dashboard preview" }));
+    expect(screen.getByRole("heading", { name: "Today at a glance" })).toBeInTheDocument();
+  });
+  it("renders the direct dashboard alias with the active sidebar destination", () => {
+    setup("/dashboard");
+    expect(screen.getByRole("heading", { name: "Today at a glance" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("aria-current", "page");
+  });
   it("shows the static dashboard overview without implying live data", () => {
     setup();
     expect(screen.getByRole("heading", { name: "Today at a glance", level: 2 })).toBeInTheDocument();
@@ -60,7 +73,8 @@ describe("desktop shell", () => {
   });
   it("supports direct destinations and unknown routes", () => {
     setup("/missing");
-    expect(screen.getByRole("banner")).toHaveTextContent("Page not found");
+    expect(screen.getByRole("heading", { name: "Page not found" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Return to Dashboard" })).toHaveAttribute("href", "/dashboard");
   });
   it("opens the orders destination without pretending an order was created", async () => {
     const user = userEvent.setup();

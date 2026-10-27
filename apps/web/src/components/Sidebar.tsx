@@ -10,7 +10,8 @@ export function Sidebar({
   toggle: () => void;
 }) {
   const { theme, setTheme } = useTheme();
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const pathname = location.pathname === "/dashboard" ? "/" : location.pathname;
   const selected = destinations.findIndex((item) => item.path === pathname);
   return (
     <aside className="sidebar" aria-label="Application sidebar">
@@ -40,7 +41,7 @@ export function Sidebar({
           {destinations.map((item) => (
             <NavLink
               key={item.path}
-              to={item.path}
+              to={item.path === "/" && location.pathname === "/dashboard" ? "/dashboard" : item.path}
               end
               title={collapsed ? item.label : undefined}
               aria-label={item.label}

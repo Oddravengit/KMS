@@ -2,7 +2,7 @@
 
 ## Run locally
 
-Use Node.js 22.12+ (or Node 24) and npm. From the repository root:
+Use Node.js 22.13+ (or Node 24) and npm. From the repository root:
 
 ```sh
 npm ci
@@ -100,3 +100,41 @@ The frontend worker follows the ODD RAVEN ERP V1 component specification. Work i
 The current audit confirms Component 001 — Master Sidebar (`34:259`) is implemented in `apps/web/src/components/Sidebar.tsx` with the approved 280ms indicator, expanded/collapsed behavior, route awareness, and Light/Dark/Glass themes. Component 002 — Desktop Topbar now has reusable `Navigation / Topbar Icon Button` variants in Figma (`465:1831`) for Quick Action (`465:1824`) and Messages (`465:1827`), using the existing semantic surface, border, and action variables across Light, Dark, and Glass modes. Instances were placed in both approved topbar variants. The frontend mirror is `apps/web/src/components/TopbarIconButton.tsx`; the controls remain demo navigation/status behavior until backend contracts exist.
 
 Components 005–007 are now mirrored in the web component library after Figma validation: `Breadcrumb` (`Breadcrumb.tsx`), `PageHeader` (`PageHeader.tsx`), and `DashboardSectionContainer` (`DashboardSectionContainer.tsx`). They provide typed props, responsive layout, accessible navigation and headings, and loading/empty/error section states. `LibraryComponents.test.tsx` covers the business-facing rendering states; no API dependencies are connected.
+
+
+## Day 02 frontend bootstrap — 2026-10-27
+
+Assignment: [ODD RAVEN Frontend Daily — Day 2](https://chatgpt.com/share/6ae0729e-7778-83e8-8c9d-adbe64d4d304).
+Continue in day order. Day 6 route guards and authentication are outside this delivery.
+
+The repository already had React, TypeScript, Vite, React Router, Vitest and the approved Super Admin shell. `develop` contained the backend foundation; frontend integration remained in open PR #3 and newer visual work in open PR #1. Branch `feat/day02-frontend-bootstrap` includes both existing frontend histories, with the newer shell, Dashboard and reusable components preserved. No `services/api/` files were changed. The PR targets `develop` and includes those unmerged frontend dependencies.
+
+Missing Day 2 deliverables are now supplied:
+
+- `/login` renders a clearly labeled placeholder, with no credential form or authentication behavior.
+- `/dashboard` renders the existing demo Dashboard and selects its sidebar destination; `/` remains supported.
+- Unknown paths render a Not Found heading and a Dashboard return link.
+- `src/pages/` holds the route-level components, and `src/services/api.ts` holds the API URL configuration. Existing component/theme boundaries remain intact; empty abstraction directories were not introduced.
+- ESLint checks JavaScript, TypeScript and React hook rules. Root and web workspace scripts expose `lint` and `typecheck`; `check` remains compatible. CI runs lint, type checking, tests and build.
+- `apps/web/.env.example` documents `VITE_API_BASE_URL`. Default `/api/v1` uses the existing Vite `/api` proxy to `http://127.0.0.1:8000`. An explicit backend origin requires backend CORS configuration. Environment values are public build-time configuration, never secrets.
+- Existing connection diagnostics use the configured API prefix for `health` and `ready`. No fake endpoints or successful connection states were added.
+- Vitest was upgraded to 5.0.5 or later to resolve the installed test tooling advisories. Node.js 22.13+ or Node 24 is required for the current tooling.
+
+Run from the repository root:
+
+```sh
+npm ci
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run dev
+```
+
+For a forwarded Codespaces preview, use `npm run dev -w @kms/web -- --host 0.0.0.0`. The Vite configuration preserves the configured Codespaces host allowlist. A production server must rewrite `/login`, `/dashboard`, and other application routes to `index.html`.
+
+The backend source already defines `/api/v1/health` and `/api/v1/ready`; live connectivity is not claimed because no backend was running for this verification. Authentication remains unimplemented and the Super Admin identity remains demo content. Existing Light/Dark/Glass styling and 280ms sidebar motion are preserved; the placeholder routes reuse the established workspace-card pattern.
+
+Validation: `npm ci`, `npm run lint` (zero warnings), `npm run typecheck`, all 16 tests across four files, production build, and whitespace checks passed. npm audit reported zero vulnerabilities. Chromium verified `/login`, `/dashboard` with its active navigation link, and an unknown route; Light/Dark/Glass switched correctly with no page errors. Additional Login captures were checked at 1440 × 600 and 390 × 844. The existing desktop minimum width of 650 px still requires horizontal scrolling on narrow screens, as documented above. Screenshots from this run are in `/tmp/kms-day02-preview/` in the working environment.
+
+npm's install policy prints an advisory that esbuild's postinstall script is not listed in `allowScripts`; the build passed without changing that policy. This advisory is separate from ESLint, which passed with zero warnings.

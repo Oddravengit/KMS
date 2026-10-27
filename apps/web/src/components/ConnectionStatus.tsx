@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../services/api";
 
 type State = "checking" | "connected" | "unavailable" | "unknown";
 
@@ -13,7 +14,7 @@ function label(state: State) {
 
 async function checkApi(): Promise<State> {
   try {
-    const response = await fetch("/api/v1/health", {
+    const response = await fetch(apiUrl("health"), {
       signal: AbortSignal.timeout(4000),
     });
     if (!response.ok) return "unavailable";
@@ -28,7 +29,7 @@ async function checkApi(): Promise<State> {
 
 async function checkDatabase(): Promise<State> {
   try {
-    const response = await fetch("/api/v1/ready", {
+    const response = await fetch(apiUrl("ready"), {
       signal: AbortSignal.timeout(4000),
     });
     const body: unknown = await response.json();
