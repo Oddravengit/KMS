@@ -10,6 +10,7 @@
     "check": "npm run check -w @kms/web",
     "test": "npm run test -w @kms/web",
     "lint": "npm run lint -w @kms/web",
-    "typecheck": "npm run typecheck -w @kms/web"
+    "typecheck": "npm run typecheck -w @kms/web",
+    "smoke:api": "npm run smoke:api -w @kms/web --"
   }
 }

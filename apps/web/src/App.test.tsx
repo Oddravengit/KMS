@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { ThemeProvider } from "./theme/ThemeProvider";
 function setup(path = "/") {
@@ -14,6 +14,10 @@ function setup(path = "/") {
   );
 }
 describe("desktop shell", () => {
+  beforeEach(() => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
+  });
+  afterEach(() => vi.restoreAllMocks());
   it("renders the login placeholder without collecting credentials", async () => {
     const user = userEvent.setup();
     setup("/login");

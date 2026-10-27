@@ -138,3 +138,42 @@ The backend source already defines `/api/v1/health` and `/api/v1/ready`; live co
 Validation: `npm ci`, `npm run lint` (zero warnings), `npm run typecheck`, all 16 tests across four files, production build, and whitespace checks passed. npm audit reported zero vulnerabilities. Chromium verified `/login`, `/dashboard` with its active navigation link, and an unknown route; Light/Dark/Glass switched correctly with no page errors. Additional Login captures were checked at 1440 × 600 and 390 × 844. The existing desktop minimum width of 650 px still requires horizontal scrolling on narrow screens, as documented above. Screenshots from this run are in `/tmp/kms-day02-preview/` in the working environment.
 
 npm's install policy prints an advisory that esbuild's postinstall script is not listed in `allowScripts`; the build passed without changing that policy. This advisory is separate from ESLint, which passed with zero warnings.
+
+## Day 03 frontend–backend smoke checks — 2026-10-27
+
+Continues Day 2 in schedule order, using the Day 3 assignment in the shared frontend daily plan. Branch `feat/day03-frontend-health-smoke` is stacked on `feat/day02-frontend-bootstrap` (PR #5), which already combines the integration and newer design histories from PR #3 and PR #1. Its PR targets the Day 2 branch so the integration corrections can be reviewed separately. No backend-owned source files changed.
+
+Restored the integration branch's development-only `ConnectionStatus` display below the Appearance controls, including its collapsed-sidebar hiding behavior. During Day 2 reconciliation the component remained available but was not mounted in the newer sidebar. Existing shell styling, theme controls and 280ms selection motion are preserved. On shorter viewports, the sidebar scrolls to reach Appearance and diagnostics.
+
+API health now verifies `status`, `service` and `version`; database readiness requires both `status: ok` and `database: ok`. Invalid responses cannot imply success. The checks update independently, time out after four seconds, refresh every 15 seconds, and abort pending requests on unmount. Offline API yields Unavailable; database reachability that cannot be verified yields Unknown. A reachable readiness endpoint reporting a failed database yields Unavailable. These are development diagnostics; the production bundle excludes the component and its polling.
+
+Added malformed-response, service-identity, contradictory-readiness, pending-database, timeout, recovery and polling-cleanup tests. Shell tests explicitly mock offline connections to stay independent of running services.
+
+### Repeatable API smoke command
+
+Start the existing backend on loopback port 8000 and Vite on port 5173, then run from the root:
+
+```sh
+npm run smoke:api
+```
+
+The command checks HTTP status and the exact existing response contract for health and readiness directly and through Vite. `KMS_SMOKE_BACKEND_URL` and `KMS_SMOKE_FRONTEND_URL` can override the two origins. To verify the negative readiness contract, stop only your disposable development database and run:
+
+```sh
+npm run smoke:api -- --database-unavailable
+```
+
+Restart the disposable database afterward. Never run outage tests against a shared or production database. The smoke command does not start, stop or mock any service and intentionally requires a running backend.
+
+### Verified evidence
+
+- Clean `npm ci`, ESLint, TypeScript, 23 tests in four files, production build and whitespace checks passed. npm audit reported zero vulnerabilities. The existing esbuild install-policy advisory remains as recorded under Day 2.
+- Used the existing FastAPI implementation unchanged with dependencies from `backend/requirements-dev.lock` in `/tmp/kms-day03-venv`.
+- Used a dedicated PostgreSQL 16 container, `kms-day03-smoke-db`, bound only to `127.0.0.1:55433`, with a disposable database and the existing Alembic baseline. No shared database was stopped. No port-visibility settings were changed.
+- Online: direct API and Vite proxy health/readiness both returned HTTP 200 with their expected JSON contracts. `npm run smoke:api` passed all four assertions.
+- Database stopped: health stayed HTTP 200 and readiness returned HTTP 503, both directly and through Vite. The negative smoke command passed all four assertions. Browser diagnostics independently displayed API Connected and Database Unavailable, then automatically recovered after restart.
+- Backend stopped: browser displayed API Unavailable and Database Unknown while the Dashboard remained usable. Restarting FastAPI recovered both indicators on the next poll. Expected HTTP failures during this deliberate outage did not cause page exceptions.
+- Chromium checked all 11 navigation destinations and active states, collapse/expand, Light/Dark/Glass at 1440 × 900, and keyboard access to Settings at 1440 × 600. No page errors occurred. Screenshots are in `/tmp/kms-day03-preview/`, including online themes, database outage, full backend outage, recovery and short-desktop captures.
+- Production JavaScript was checked to confirm the diagnostic label and API health service marker are absent, so production does not run this development polling.
+
+These checks verify local development integration, not authentication or business workflows. The Dashboard still displays demo data. Day 4 remains separate work.

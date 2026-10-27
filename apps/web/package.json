@@ -10,7 +10,8 @@
     "test": "vitest run",
     "preview": "vite preview --host 127.0.0.1",
     "lint": "eslint . --max-warnings 0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "smoke:api": "node scripts/smoke-api.mjs"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
