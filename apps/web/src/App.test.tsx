@@ -1,14 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useNavigate } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { ThemeProvider } from "./theme/ThemeProvider";
+function HistoryControls() {
+  const navigate = useNavigate();
+  return <><button onClick={() => navigate(-1)}>Back in history</button><button onClick={() => navigate(1)}>Forward in history</button></>;
+}
 function setup(path = "/") {
   return render(
     <MemoryRouter initialEntries={[path]}>
       <ThemeProvider>
         <App />
+        <HistoryControls />
       </ThemeProvider>
     </MemoryRouter>,
   );
@@ -30,6 +35,18 @@ describe("desktop shell", () => {
     setup("/dashboard");
     expect(screen.getByRole("heading", { name: "Today at a glance" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Dashboard" })).toHaveAttribute("aria-current", "page");
+  });
+  it("preserves theme and active navigation across browser history", async () => {
+    const user = userEvent.setup();
+    setup();
+    await user.click(screen.getByRole("button", { name: "Dark" }));
+    await user.click(screen.getByRole("link", { name: "Customers" }));
+    await user.click(screen.getByRole("link", { name: "Orders" }));
+    await user.click(screen.getByRole("button", { name: "Back in history" }));
+    expect(screen.getByRole("link", { name: "Customers" })).toHaveAttribute("aria-current", "page");
+    await user.click(screen.getByRole("button", { name: "Forward in history" }));
+    expect(screen.getByRole("link", { name: "Orders" })).toHaveAttribute("aria-current", "page");
+    expect(document.documentElement.dataset.theme).toBe("dark");
   });
   it("shows the static dashboard overview without implying live data", () => {
     setup();

@@ -47,7 +47,7 @@ export function Sidebar({
               title={collapsed ? item.label : undefined}
               aria-label={item.label}
             >
-              <Icon name={item.icon} />
+              <Icon name={item.icon} monochrome />
               <span className="nav-label">{item.label}</span>
             </NavLink>
           ))}
