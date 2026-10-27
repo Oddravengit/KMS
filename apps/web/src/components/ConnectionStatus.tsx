@@ -12,14 +12,16 @@ function label(state: State) {
   }[state];
 }
 
-async function checkApi(): Promise<State> {
+async function checkApi(signal: AbortSignal): Promise<State> {
   try {
     const response = await fetch(apiUrl("health"), {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.any([signal, AbortSignal.timeout(4000)]),
     });
     if (!response.ok) return "unavailable";
     const body: unknown = await response.json();
-    return typeof body === "object" && body !== null && "status" in body && body.status === "ok"
+    return typeof body === "object" && body !== null && "status" in body && body.status === "ok" &&
+      "service" in body && body.service === "odd-raven-api" &&
+      "version" in body && body.version === "v1"
       ? "connected"
       : "unavailable";
   } catch {
@@ -27,13 +29,14 @@ async function checkApi(): Promise<State> {
   }
 }
 
-async function checkDatabase(): Promise<State> {
+async function checkDatabase(signal: AbortSignal): Promise<State> {
   try {
     const response = await fetch(apiUrl("ready"), {
-      signal: AbortSignal.timeout(4000),
+      signal: AbortSignal.any([signal, AbortSignal.timeout(4000)]),
     });
     const body: unknown = await response.json();
-    return response.ok && typeof body === "object" && body !== null && "database" in body && body.database === "ok"
+    return response.ok && typeof body === "object" && body !== null && "status" in body && body.status === "ok" &&
+      "database" in body && body.database === "ok"
       ? "connected"
       : "unavailable";
   } catch {
@@ -47,20 +50,22 @@ export function ConnectionStatus() {
 
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
     const refresh = async () => {
-      const [apiState, databaseState] = await Promise.all([
-        checkApi(),
-        checkDatabase(),
+      await Promise.all([
+        checkApi(controller.signal).then((state) => {
+          if (active) setApi(state);
+        }),
+        checkDatabase(controller.signal).then((state) => {
+          if (active) setDatabase(state);
+        }),
       ]);
-      if (active) {
-        setApi(apiState);
-        setDatabase(databaseState);
-      }
     };
     void refresh();
     const timer = window.setInterval(() => void refresh(), 15000);
     return () => {
       active = false;
+      controller.abort();
       window.clearInterval(timer);
     };
   }, []);
