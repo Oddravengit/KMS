@@ -177,3 +177,29 @@ Restart the disposable database afterward. Never run outage tests against a shar
 - Production JavaScript was checked to confirm the diagnostic label and API health service marker are absent, so production does not run this development polling.
 
 These checks verify local development integration, not authentication or business workflows. The Dashboard still displays demo data. Day 4 remains separate work.
+
+## Day 04 themes and routing stabilization — 2026-10-27
+
+Continues the Day 4 assignment in the shared daily plan. Branch `feat/day04-frontend-theme-routing` is stacked on Day 3 PR #6 because the earlier frontend PRs remain open. No backend files or health/readiness contracts changed.
+
+### Approved design audit and implementation
+
+Read the approved Figma file using the Figma plugin: `ODD RAVEN / SEMANTIC COLORS` (`VariableCollectionId:96:345`) and `ODD RAVEN / MOTION TOKENS` (`VariableCollectionId:237:481`). Verified the existing sidebar master `34:259` with expanded/collapsed dimensions of 256/72 px, the sidebar item `22:66`, theme switcher `165:321`, desktop topbar `175:478`, and Dashboard masters. The selection and collapse tokens remain 280ms with EASE_OUT. The file was inspected read-only; no new ERP screen or Figma component was required.
+
+- Extracted semantic colors into `src/theme/tokens.css`, including the approved icon/default values (Light `#64748b`, Dark `#c4c4d4`, Glass `#d7e0f0`) and overlay surfaces. Shared radii, spacing, shadows, existing Glass surface treatments and motion values now live beside them. Existing approved geometry and the existing chart treatment are retained.
+- Added a small blocking `public/theme-init.js` script before the render-blocking stylesheet and React entry. It safely reads the saved preference so the first rendered background uses the correct theme. Invalid or inaccessible preferences fall back to Light. ThemeProvider uses a layout effect so runtime theme and control state update before paint; storage failures do not prevent switching.
+- Glass retains its wallpaper and blur treatment where supported. A CSS feature query replaces translucent surfaces with the existing opaque Dark surfaces when standard and WebKit backdrop-filter are both unavailable. The fallback introduces no new palette.
+- Sidebar labels use semantic secondary text instead of a fixed Light-theme color. Monochrome navigation, search, chevron, quick-action and message icons reuse the same SVG shapes as CSS masks, allowing semantic colors to inherit correctly. Multicolor notification, avatar and collapse artwork remain local assets.
+- Reused the current Sidebar, Topbar, ThemeProvider, page components, routing and connection diagnostics. Added tests for invalid and blocked storage, failed persistence and back/forward navigation retaining the selected theme. No authentication behavior changed.
+
+### Validation and evidence
+
+Clean `npm ci`, ESLint (zero warnings), TypeScript, all 27 tests in five files, production build and whitespace checks passed. npm audit reported zero vulnerabilities during clean installation. The existing esbuild install-policy advisory remains; the build succeeds without policy changes.
+
+Chromium checked the production build at 1440 × 900 and 1440 × 600 for Light, Dark and Glass. Tests deliberately held the React entry script and verified each saved theme's correct page background before React rendered, then verified refresh persistence. Browser back/forward navigation, active route states, collapse/expand to 72/256 px, keyboard access to Settings, and the computed 0.28s selection duration passed. Reduced-motion emulation reported a zero-duration transition. Blocking localStorage still allowed startup and theme switching. No page errors occurred.
+
+The Glass fallback was verified by forcing the existing unsupported-feature query branch in Chromium's served CSS, then asserting opaque backgrounds on the sidebar, topbar, KPI cards and analytics panels. This checks the fallback rules; it is not a claim of a separate Safari/browser-engine run. The normal Glass screenshots were verified separately with blur enabled.
+
+Development browser verification confirmed real API and database indicators both remained Connected. Inactive Dark navigation text measured a contrast ratio above 4.5:1 against its sidebar surface. The approved low-opacity topbar subtitle and the desktop minimum width remain as documented in the foundation handoff.
+
+Screenshots: `/tmp/kms-day04-preview/light-1440x900.png`, `dark-1440x900.png`, `glass-1440x900.png`, corresponding 1440 × 600 captures, and `glass-fallback.png`. These are local working-environment artifacts. PR review remains required; no PR is merged automatically.

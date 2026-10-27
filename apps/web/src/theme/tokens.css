@@ -1,0 +1,111 @@
+:root {
+  /* Figma: ODD RAVEN / SEMANTIC COLORS, audited 2026-10-27. */
+  color: var(--text-primary);
+  background: var(--bg-page);
+  font-synthesis: none;
+  --bg-page: #f7f8fc;
+  --bg-surface: #fff;
+  --bg-subtle: #f8fafc;
+  --bg-selected: #ede9fe;
+  --bg-overlay: #fff;
+  --icon-default: #64748b;
+  --border: var(--border-default);
+  --text-primary: #181628;
+  --text-secondary: #647488;
+  --placeholder: #94a3b8;
+  --primary: var(--action-primary);
+  --on-primary: var(--action-on-primary);
+  --action-primary: #8b5cf6;
+  --action-on-primary: #fff;
+  --border-default: #e2e8f0;
+  --status-success: #15803d;
+  --status-warning: #b45309;
+  --status-info: #2563eb;
+  /* Existing master geometry and approved 280ms / EASE_OUT motion. */
+  --brand-mark: #9c6be0;
+  --selection-bg: #8c5cf5;
+  --chart-highlight: #a78bfa;
+  --radius-xs: 4px;
+  --radius-small: 6px;
+  --radius-control: 8px;
+  --radius-menu: 10px;
+  --radius-group: 12px;
+  --radius-panel: 14px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --motion-selection: 280ms;
+  --motion-sidebar-collapse: 280ms;
+  --motion-label: 140ms;
+  --ease-standard: ease-out;
+  --shadow-popover: 0 12px 32px #18162815;
+  --shadow-menu: 0 8px 24px #18162818;
+  --shadow-glass: inset 0 1px 0 #ffffff24;
+  --glass-shell-surface: rgb(8 17 32 / 30%);
+  --glass-panel-surface: rgb(8 17 32 / 38%);
+  --glass-popup-surface: rgb(8 17 32 / 90%);
+  --glass-wallpaper-dim: #080d2238;
+  --glass-shell-blur: 20px;
+  --glass-panel-blur: 18px;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg-page: #0f1020;
+  --bg-surface: #171727;
+  --bg-subtle: #242438;
+  --bg-selected: #3b2867;
+  --bg-overlay: #242438;
+  --icon-default: #c4c4d4;
+  --border: var(--border-default);
+  --text-primary: #f8f7ff;
+  --text-secondary: #a1a1aa;
+  --placeholder: #a1a1aa;
+  --status-success: #4ade80;
+  --status-warning: #fbbf24;
+  --status-info: #60a5fa;
+  color-scheme: dark;
+  --primary: var(--action-primary);
+  --on-primary: var(--action-on-primary);
+  --action-primary: #8b5cf6;
+  --action-on-primary: #fff;
+  --border-default: #3b3b55;
+}
+:root[data-theme="glass"] {
+  --bg-page: #080d22;
+  --bg-surface: #17234440;
+  --bg-subtle: #28355a55;
+  --bg-selected: #8b5cf655;
+  --bg-overlay: #101a35cc;
+  --icon-default: #d7e0f0;
+  --border: var(--border-default);
+  --text-primary: #ffffff;
+  --text-secondary: #d7e0f0;
+  --placeholder: #a8b6d5;
+  --status-success: #86efac;
+  --status-warning: #fcd34d;
+  --status-info: #93c5fd;
+  color-scheme: dark;
+  --primary: var(--action-primary);
+  --on-primary: var(--action-on-primary);
+  --action-primary: #8b5cf6;
+  --action-on-primary: #fff;
+  --border-default: #ffffff47;
+}
+/* Reuse the approved opaque Dark surfaces when blur is unavailable. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root[data-theme="glass"] {
+    --bg-surface: #171727;
+    --bg-subtle: #242438;
+    --bg-overlay: #242438;
+    --glass-shell-surface: var(--bg-surface);
+    --glass-panel-surface: var(--bg-surface);
+    --glass-popup-surface: var(--bg-overlay);
+  }
+}

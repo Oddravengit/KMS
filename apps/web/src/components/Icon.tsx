@@ -1,4 +1,4 @@
-export function Icon({ name }: { name: string }) {
+export function Icon({ name, monochrome = false }: { name: string; monochrome?: boolean }) {
   if (name === "dashboard")
     return (
       <span className="dashboard-icon" aria-hidden="true">
@@ -7,6 +7,11 @@ export function Icon({ name }: { name: string }) {
         ))}
       </span>
     );
+  if (monochrome || ["quick-action", "messages", "search", "down"].includes(name)) {
+    const source = `url("/assets/figma/${name}.svg")`;
+    return <span className={`icon icon-${name} icon-monochrome`} aria-hidden="true"
+      style={{ maskImage: source, WebkitMaskImage: source }} />;
+  }
   return (
     <img
       className={`icon icon-${name}`}
